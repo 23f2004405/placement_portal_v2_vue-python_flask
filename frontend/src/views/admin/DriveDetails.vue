@@ -113,7 +113,7 @@ const updateDriveStatus = async (action) => {
         <div class="col-md-6">
           <p>
             <strong>Application Deadline:</strong>
-            {{new Date(drive.deadline).toLocaleDateString() ?? 'Not specified' }}
+            {{new Date(drive.deadline).toLocaleString() ?? 'Not specified' }}
           </p>
         </div>
       </div>

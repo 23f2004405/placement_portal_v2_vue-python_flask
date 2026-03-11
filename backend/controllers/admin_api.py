@@ -29,7 +29,7 @@ class AdminDriveApprovalResource(Resource):
             drive.status = DriveStatus.APPROVED
 
         elif action == "reject":
-            drive.status = DriveStatus.REJECTED
+            drive.status = DriveStatus.CANCELLED
 
         else:
             return make_response(jsonify({

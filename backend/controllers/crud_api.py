@@ -45,7 +45,6 @@ class StudentDetailApi(Resource):
     @roles_accepted("STUDENT","ADMIN")
     @cache.cached(timeout=300, key_prefix=lambda: f"student_{request.view_args['student_id']}")
     def get(self, student_id):
-
         student = db.session.get(Student, student_id)
 
         if not student:
@@ -85,7 +84,6 @@ class CompanyDetailApi(Resource):
     @roles_accepted("ADMIN","COMPANY")
     @cache.cached(timeout=300, key_prefix=lambda: f"company_{request.view_args['company_id']}")
     def get(self, company_id):
-
         company = db.session.get(Company, company_id)
 
         if not company:

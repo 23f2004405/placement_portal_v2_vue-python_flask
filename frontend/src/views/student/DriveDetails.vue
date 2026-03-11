@@ -129,7 +129,7 @@ const applydrive = async () => {
       <div class="col-md-6">
         <p>
           <strong>Application Deadline:</strong>
-          {{ new Date(drive.application_deadline).toLocaleDateString() ?? "Not specified" }}
+          {{ new Date(drive.application_deadline).toLocaleString() ?? "Not specified" }}
         </p>
       </div>
 

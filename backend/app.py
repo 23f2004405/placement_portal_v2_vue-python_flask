@@ -63,13 +63,14 @@ api.add_resource(CompanyDriveApplicationsApi,'/api/company/drive/<drive_id>/appl
 api.add_resource(CompanyApplicationDetailApi,'/api/company/application/<application_id>')
 api.add_resource(CompanyUpdateApplicationStatusApi,'/api/company/application/change_status/<application_id>')
 
-from controllers.student_api import UploadResumeApi,ApprovedDrives,StudentDriveDetails,StudentApplyDrive,UpdateProfile,StudentApplicationHistory
+from controllers.student_api import UploadResumeApi,ApprovedDrives,StudentDriveDetails,StudentApplyDrive,UpdateProfile,StudentApplicationHistory,ExportApplicationsAPI
 api.add_resource(ApprovedDrives,'/api/student/approved_drives')
 api.add_resource(StudentDriveDetails, '/api/student/drive/<drive_id>')
 api.add_resource(StudentApplyDrive,'/api/student/drive/<drive_id>/apply')
 api.add_resource(UpdateProfile, '/api/student/edit_profile')
 api.add_resource(StudentApplicationHistory, '/api/student/applications')
 api.add_resource(UploadResumeApi,'/api/student/upload_resume')
+api.add_resource(ExportApplicationsAPI,'/api/student/export_history')
 
 from controllers.admin_api import AdminDriveApprovalResource,AdminDashboard,AdminCompanyRegistrations,CompanyApprovalStatusChange,Companies,ToggleBlacklist,Students,PlacementDrivesList,ApplicationList
 api.add_resource(AdminDashboard,'/api/admin/dashboard')

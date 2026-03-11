@@ -1,13 +1,14 @@
 <script setup>
-import {ref,onMounted} from "vue"
-import { useRouter,useRoute } from "vue-router"
+import {ref} from "vue"
+import { useRouter } from "vue-router"
 import { useAuthStore } from "@/stores/auth"
 
 const router = useRouter()
-const route = useRoute()
 const authstore = useAuthStore()
+
 const error = ref()
 const success = ref()
+
 const form = ref({
     title:"",
     description:"",
@@ -18,28 +19,40 @@ const form = ref({
 
 const createDrive = async () =>{
   error.value=false
-    try{
+
+  try{
+
+        // convert datetime-local (local time) → UTC ISO string
+        const payload = {
+            ...form.value,
+            application_deadline: new Date(form.value.application_deadline).toISOString()
+        }
+
         const response = await fetch(`http://localhost:5000/api/company/create_drive`,{
             method:'POST',
             headers:{
                 'Authentication-Token':authstore.token,
                 "Content-Type": "application/json"
             },
-            body:JSON.stringify(form.value)
+            body: JSON.stringify(payload)
         })
+
         const data = await response.json()
+
         if (!response.ok){
             throw new Error(data.message)
         }
-        success.value=data.message
+
+        success.value = data.message
+
         setTimeout(() => {
           router.push(`/company/${authstore.role_based_id}`)
-        }, 2000);
+        }, 2000)
+
     }catch(err){
-        error.value=err.message
+        error.value = err.message
     }
 }
-
 </script>
 
 <template>
@@ -85,7 +98,7 @@ const createDrive = async () =>{
 
               <div class="mb-3">
                 <label class="form-label">Application Deadline</label>
-                <input v-model="form.application_deadline" type="date" class="form-control" required />
+                <input v-model="form.application_deadline" type="datetime-local" class="form-control" required />
               </div>
 
               <button type="submit" class="btn btn-success w-100">

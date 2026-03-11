@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
 
-          <!-- anonymous -->
+          <!-- Not Logged In -->
           <template v-if="!authstore.isAuthenticated">
             <li class="nav-item">
               <RouterLink class="nav-link" to="/register_student">
@@ -128,6 +128,12 @@
             </li>
 
             <li class="nav-item">
+              <button class="nav-link" @click="exportHistory">
+                Export Placement History
+              </button>
+            </li>
+
+            <li class="nav-item">
               <button class="btn btn-danger btn-sm ms-2" @click="logout">
                 Logout
               </button>
@@ -204,5 +210,17 @@ try {
   } catch (error) {
     console.error("Logout failed:", error)
   }
+}
+
+const exportHistory = async () => {
+
+  await fetch("http://localhost:5000/api/student/export_history", {
+    method: "POST",
+    headers: {
+      "Authentication-Token": authstore.token
+    }
+  })
+
+  alert("CSV export started. You will receive the file in an email when ready.")
 }
 </script>

@@ -71,6 +71,8 @@ const uploadResume = async () => {
   try {
 
     const formData = new FormData()
+
+    // name must match request.files["resume"] in Flask
     formData.append("resume", selectedFile.value)
 
     const response = await fetch("http://localhost:5000/api/student/upload_resume", {

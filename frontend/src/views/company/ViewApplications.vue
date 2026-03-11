@@ -51,19 +51,23 @@ const goToApplicationDetails = (application) => {
 <template>
   <div class="container mt-4">
 
+    <!-- Error -->
     <div v-if="error" class="alert alert-danger">
       {{ error }}
     </div>
 
+    <!-- Loading -->
     <div v-else-if="loading" class="text-center">
       <p>Loading applications...</p>
     </div>
 
+    <!-- Empty State -->
     <div v-else-if="applications.length === 0" class="text-center mt-5">
       <h4>No Applications Yet</h4>
       <p class="text-muted">Students have not applied to this drive.</p>
     </div>
 
+    <!-- Applications List -->
     <div v-else class="row">
       <div
         class="col-md-6 col-lg-4 mb-4"

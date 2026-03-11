@@ -41,6 +41,7 @@ const fetchProfile = async () => {
     form.value.department=data.department
     form.value.roll_number=data.roll_number
     form.value.email=data.email
+    form.value.passing_out_year=data.passing_out_year
 
   } catch (err) {
     error.value = err.message

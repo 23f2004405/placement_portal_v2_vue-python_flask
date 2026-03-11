@@ -75,7 +75,7 @@ class ApprovedDrives(Resource):
 
         subquery = (sa.select(Application.id).where(Application.student_id == student.id,Application.drive_id == PlacementDrive.id))
 
-        query = (sa.select(PlacementDrive).join(Company).where(PlacementDrive.status == DriveStatus.APPROVED,PlacementDrive.application_deadline > datetime.utcnow(),~sa.exists(subquery)))
+        query = (sa.select(PlacementDrive).join(Company).where(PlacementDrive.status == DriveStatus.APPROVED,PlacementDrive.application_deadline >= datetime.utcnow(),~sa.exists(subquery)))
         if cgpa:
             query=query.where(PlacementDrive.min_cgpa<=cgpa)
         if company_name:
@@ -207,28 +207,13 @@ class StudentApplicationHistory(Resource):
             result.append(data)
         return make_response(jsonify(result),200)
     
+class ExportApplicationsAPI(Resource):
+    @auth_token_required
+    @roles_required("STUDENT")
+    def post(self):
+        from celery_app import export_applications_csv
+        export_applications_csv.delay(current_user.id)
 
-# class ExportApplicationsCsv(Resource):
-#     @auth_token_required
-#     @roles_required("STUDENT")
-#     def get(self):
-#         student_id = current_user.student.id  
-
-#         export_applications_csv.delay(student_id)
-
-#         return make_response(jsonify({
-#             "message": "CSV export started. You will get an email when it's ready."
-#         }), 200)
-
-# EXPORT_FOLDER = "exports"
-
-# class DownloadCSV(Resource):
-#     @auth_token_required
-#     @roles_required("STUDENT")
-#     def get(self,filename):
-#         file_path=os.path.join(EXPORT_FOLDER,filename)
-#         if not os.path.exists(file_path):
-#             return make_response(jsonify({"message": "File not found"}), 404)
-#         return send_from_directory(EXPORT_FOLDER, filename, as_attachment=True)
-
-
+        return make_response(jsonify({
+            "message": "Export started. CSV will be emailed to you."
+        }), 202)

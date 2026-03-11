@@ -105,6 +105,7 @@ class PlacementDrive(db.Model):
 
     company = so.relationship("Company", back_populates="drives")
     applications = so.relationship("Application", back_populates="drive")
+    created_at = sa.Column(sa.DateTime, default=datetime.utcnow)
 
 class Application(db.Model):
     __tablename__ = "applications"
@@ -123,37 +124,3 @@ class Application(db.Model):
     drive = so.relationship("PlacementDrive", back_populates="applications")
 
 
-def create_db_and_seed():
-    db.create_all()
-
-    role_names = ["ADMIN", "STUDENT", "COMPANY"]
-    roles = {}
-
-    for name in role_names:
-        role = db.session.scalar(sa.select(Role).where(Role.name == name))
-        if not role:
-            role = Role(name=name)
-            db.session.add(role)
-        roles[name] = role
-
-    db.session.flush()
-
-    # ----- Create admin -----
-    admin = (
-        db.session.query(User)
-        .join(User.roles)
-        .filter(Role.name == "ADMIN")
-        .first()
-    )
-
-    if not admin:
-        admin = User(
-            email="admin@college.edu",
-            password=hash_password("admin123"),
-            fs_uniquifier=str(uuid.uuid4()),
-            active=True
-        )
-        admin.roles.append(roles["ADMIN"])
-        db.session.add(admin)
-
-    db.session.commit()
